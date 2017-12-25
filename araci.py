@@ -75,22 +75,31 @@ class serverThread(threading.Thread):
             #LSQ
             if msg[:3] == "LSQ":
                 self.sendToPeer("LSA " + str(self.fihrist))
-            # LSA {'uuid': ['peerIp', 'peerPort', 'time', 'OK', 'P/S'], 'uuid2': ['peerIp2', 'peerPort2'... }
+            # LSA {'uuid': ['peerIp', peerPort, 'time', 'OK', 'P/S'], 'uuid2': ['peerIp2', peerPort2 ... }
             elif msg[:3] == "LSA":
-                ################################### splitte sorun
-                # splited = msg[4:]
-                # splited = splited.strip('{')
-                # splited = splited.strip('}')
-                # splited = splited.split('], ')
-                # for user in splited:
-                #     uId = user.split(': ')[0]
-                #
-                #     attr = user.split(': ')[1]
-                #     attr = attr.strip('[')
-                #     attr = attr.strip(']')
-                #     attr = attr.split('\', ')
-                #     for el in attr:
-                pass
+                splited = msg[4:]
+                splited = splited.strip('{')
+                splited = splited.strip('}')
+                uList = splited.split('], ')
+                for user in uList:
+                    uId = user.split(': ')[0]
+                    uId = strip('\'')
+                    attr = user.split(': ')[1]
+                    attr = attr.strip('[')
+                    attrList = attr.split(', ')
+                    for at in attrList:
+                        fValues = list()
+                        ip = at[0]
+                        port = at[1]
+                        time = at[2]
+                        statement = at[3]
+                        genre = at[4]
+                        fValues.append(ip)
+                        fValues.append(port)
+                        fValues.append(time)
+                        fValues.append(statement)
+                        fValues.append(genre)
+                        self.fihrist[uId] = fValues
             #CHK
             elif msg[:3] == "CHK":
                 self.sendToPeer("ACK " + str(self.id))
