@@ -69,6 +69,8 @@ class serverThread(threading.Thread):
                 self.mfihrist[self.peerId] = self.tQueue
                 self.sendToPeer("REJ")
                 self.peerId = ""
+        else:
+            self.s.send(str("REJ").encode())
 
     def incomingParse(self, msg):
         if len(msg) > 2:
@@ -83,7 +85,7 @@ class serverThread(threading.Thread):
                 uList = splited.split('], ')
                 for user in uList:
                     uId = user.split(': ')[0]
-                    uId = strip('\'')
+                    uId = uId.strip('\'')
                     attr = user.split(': ')[1]
                     attr = attr.strip('[')
                     attrList = attr.split(', ')
