@@ -93,12 +93,12 @@ class serverThread(threading.Thread):
                         fValues = list()
                         ip = at[0]
                         port = at[1]
-                        time = at[2]
+                        Time = at[2]
                         statement = at[3]
                         genre = at[4]
                         fValues.append(ip)
                         fValues.append(port)
-                        fValues.append(time)
+                        fValues.append(Time)
                         fValues.append(statement)
                         fValues.append(genre)
                         self.fihrist[uId] = fValues
