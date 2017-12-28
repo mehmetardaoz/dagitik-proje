@@ -103,12 +103,21 @@ class serverThread(threading.Thread):
             #CHK
             elif msg[:3] == "CHK":
                 self.sendToPeer("ACK " + str(self.id))
-            #ACK uuid timestamp
+            #ACK uuid
             elif msg[:3] == "ACK":
                 # update time
                 splited = msg.split(" ")
                 ackID = splited[1]
                 self.fihrist[ackID][2] = str(time.ctime())
+            #ERR
+            elif msg[:3] == "ERR":
+                pass
+            #HEL
+            elif msg[:3] == "HEL":
+                pass
+            #REJ
+            elif msg[:3] == "REJ":
+                self.sendToPeer("USR " + str(self.id) + ' ' + str(self.ip) + ' ' + str(self.port) + " S")
             else:
                 self.sendToPeer("ERR")
 
