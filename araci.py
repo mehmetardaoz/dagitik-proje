@@ -142,7 +142,7 @@ class clientThread(threading.Thread):
 
     def run(self):
         self.lQueue.put(self.name + ": starting")
-        chkTread = checkMsg(self.tQueue)
+        chkThread = checkMsg(self.tQueue)
         chkThread.start()
         while True:
             # get the message from thread queue to send
@@ -168,7 +168,7 @@ class clientThread(threading.Thread):
 
 class checkMsg(threading.Thread):
     def __init__(self, threadQueue):
-        threading.Thread.__init(self)
+        threading.Thread.__init__(self)
         self.tQueue = threadQueue
     def run(self):
         while(True):
