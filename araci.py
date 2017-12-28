@@ -133,6 +133,8 @@ class clientThread(threading.Thread):
 
     def run(self):
         self.lQueue.put(self.name + ": starting")
+        chkTread = checkMsg(self.tQueue)
+        chkThread.start()
         while True:
             # get the message from thread queue to send
             msg = self.tQueue.get()
@@ -141,7 +143,9 @@ class clientThread(threading.Thread):
             if not self.cqueue.empty():
                 cmd = self.cqueue().get()
                 # parse
-                self.cmdParser(cmd)
+                cmdMsg = self.cmdParser(cmd)
+                #ui den alınan komuta göre mesajı tqueue'ye koy
+                self.tQueue.put(cmdMsg)
 
     def cmdParser(self, msg):
         if len(msg) > 1:
@@ -150,8 +154,19 @@ class clientThread(threading.Thread):
                 return "USR " + str(self.id) + ' ' + str(self.ip) + ' ' + str(self.port) + " S"
             elif msg[1] == "/l":
                 return "LSQ"
-            elif msg[1] == "/c":
-                return "CHK"
+            # elif msg[1] == "/c":
+            #     return "CHK"
+
+class checkMsg(threading.Thread):
+    def __init__(self, threadQueue):
+        threading.Thread.__init(self)
+        self.tQueue = threadQueue
+    def run(self):
+        while(True):
+            #120 saniyede bir CHK yollaması için
+            time.sleep(120)
+            self.tQueue.put("CHK")
+
 
 
 def main():
